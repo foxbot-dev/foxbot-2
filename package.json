@@ -1,0 +1,18 @@
+{
+  "name": "foxbot-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node bot/start.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "envkey": "^2.0.8",
+    "mongodb": "^4.5.0",
+    "redis": "^4.1.0"
+  }
+}
