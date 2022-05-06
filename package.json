@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node bot/start.js"
+    "start": "es -- node src/start.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-each": "^1.0.3",
     "discord.js": "^13.6.0",
-    "envkey": "^2.0.8",
+    "fast-glob": "^3.2.11",
+    "longjohn": "^0.2.12",
     "mongodb": "^4.5.0",
     "redis": "^4.1.0"
   }
