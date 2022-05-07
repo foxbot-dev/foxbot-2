@@ -10,11 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/rest": "^0.4.1",
     "async-each": "^1.0.3",
+    "discord-api-types": "^0.32.1",
     "discord.js": "^13.6.0",
     "fast-glob": "^3.2.11",
     "longjohn": "^0.2.12",
     "mongodb": "^4.5.0",
+    "pretty-ms": "^7.0.1",
     "redis": "^4.1.0"
   }
 }

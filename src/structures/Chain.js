@@ -2,11 +2,13 @@
  * A "Gear" (module)
  */
 class Chain {
-	constructor() {
-
+	constructor(bot) {
+		this.bolts = [];
+		this.bot = bot;
+		this._handlers = new Map();
 	}
 
-
+	init() {}
 }
 
-module.exports = Chain
+module.exports = Chain;

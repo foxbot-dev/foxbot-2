@@ -1,21 +1,23 @@
-const { createClient } = require('redis')
+const { createClient } = require('redis');
 
-async function connect() {
+module.exports = async function connect() {
 	const client = createClient({
-		url: process.env.REDIS_HOST
-	})
+		url: process.env.REDIS_HOST,
+	});
 
-	const onReject = err => console.error(err)
+	const onReject = (err) => console.error(err);
 
-	client.once('error', onReject)
+	client.once('error', onReject);
 
-	client.on('ready', () => {
-		client.removeListener('error', onReject)
-		console.log('Connected to redis')
-		return true
-	})
+	const wait = new Promise((res) => {
+		client.once('ready', () => {
+			client.removeListener('error', onReject);
+			console.log('Connected to redis');
+			res(true);
+		});
+	});
 
-	client.connect()
-}
-
-module.exports = { connect }
+	client.connect();
+	await wait;
+	return client;
+};
