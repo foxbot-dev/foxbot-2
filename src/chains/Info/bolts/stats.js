@@ -9,7 +9,6 @@ class stats extends Bolt {
 		super(...args);
 		this.name = 'stats';
 		this.aliases = ['info', 'statistics'];
-		this.chain = 'Foxbot';
 	}
 
 	/**

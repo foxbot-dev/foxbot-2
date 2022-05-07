@@ -6,6 +6,7 @@ class snipe extends Bolt {
 		super(...args);
 		this.name = 'snipe';
 		this.chain = 'Fun';
+		this.aliases = ['s']
 	}
 
 	/**
@@ -42,8 +43,8 @@ class snipe extends Bolt {
 						timestamp: rw[0][1],
 						color: colors.default,
 						footer: {
-							text: `1/${rw.length}`
-						}
+							text: `1/${rw.length}`,
+						},
 					},
 				],
 				components: [
@@ -55,12 +56,16 @@ class snipe extends Bolt {
 								style: 1,
 								emoji: '⏪',
 								customId: 'bback',
+								disabled: true,
+								style: 2,
 							},
 							{
 								type: 2,
 								style: 1,
 								emoji: '◀️',
 								customId: 'back',
+								disabled: true,
+								style: 2,
 							},
 							{
 								type: 2,
@@ -82,8 +87,10 @@ class snipe extends Bolt {
 
 		// if one message, no buttons
 		if (rw.length == 1) {
-			msg.components[0].components = msg.components[0].components.map(r => Object.assign(r, { disabled: true }))
-			return await message.reply(msg)
+			msg.components[0].components = msg.components[0].components.map((r) =>
+				Object.assign(r, { disabled: true })
+			);
+			return await message.reply(msg);
 		}
 
 		// register button collect
@@ -98,36 +105,78 @@ class snipe extends Bolt {
 				switch (i.customId) {
 					case 'bback':
 						currInd = 0;
+						msg.components[0].components[0].disabled = true;
+						msg.components[0].components[1].disabled = true;
+						msg.components[0].components[2].disabled = false;
+						msg.components[0].components[3].disabled = false;
+
+						msg.components[0].components[0].style = 2;
+						msg.components[0].components[1].style = 2;
+						msg.components[0].components[2].style = 1;
+						msg.components[0].components[3].style = 1;
 						break;
 
 					case 'back':
 						currInd = Math.max(0, currInd - 1);
+						if (currInd == 0) {
+							msg.components[0].components[0].disabled = true;
+							msg.components[0].components[1].disabled = true;
+
+							msg.components[0].components[0].style = 2;
+							msg.components[0].components[1].style = 2;
+						}
+						msg.components[0].components[2].disabled = false;
+						msg.components[0].components[3].disabled = false;
+
+						msg.components[0].components[2].style = 1;
+						msg.components[0].components[3].style = 1;
 						break;
 
 					case 'forward':
-						currInd = Math.min(rw.length, currInd + 1);
+						currInd = Math.min(rw.length - 1, currInd + 1);
+						if (currInd == rw.length - 1) {
+							msg.components[0].components[2].disabled = true;
+							msg.components[0].components[3].disabled = true;
+
+							msg.components[0].components[2].style = 2;
+							msg.components[0].components[3].style = 2;
+						}
+						msg.components[0].components[0].disabled = false;
+						msg.components[0].components[1].disabled = false;
+
+						msg.components[0].components[0].style = 1;
+						msg.components[0].components[1].style = 1;
 						break;
 
 					case 'fforward':
-						currInd = 9;
+						currInd = rw.length - 1;
+						msg.components[0].components[0].disabled = false;
+						msg.components[0].components[1].disabled = false;
+						msg.components[0].components[2].disabled = true;
+						msg.components[0].components[3].disabled = true;
+
+						msg.components[0].components[0].style = 1;
+						msg.components[0].components[1].style = 1;
+						msg.components[0].components[2].style = 2;
+						msg.components[0].components[3].style = 2;
 						break;
 				}
-				const ms = rw[currInd]
-				const author = await this.bot.client.users.fetch(ms[0])
+				const ms = rw[currInd];
+				const author = await this.bot.client.users.fetch(ms[0]);
 
 				msg.embeds[0].author = {
 					name: author.tag,
 					iconURL: author.avatarURL(),
-				}
-				msg.embeds[0].description = ms[2]
-				msg.embeds[0].timestamp = ms[1]
-				msg.embeds[0].footer.text = `${currInd + 1}/${rw.length}`
+				};
+				msg.embeds[0].description = ms[2];
+				msg.embeds[0].timestamp = ms[1];
+				msg.embeds[0].footer.text = `${currInd + 1}/${rw.length}`;
 
-				await i.update(msg)
+				await i.update(msg);
 			});
 
 			coll.on('end', () => {
-				msg.components[0].components.forEach((r) => (r.disabled = true));
+				msg.components[0].components.forEach((r) => Object.assign(r, { disabled: true, style: 2 }));
 				r.edit(msg);
 			});
 		});

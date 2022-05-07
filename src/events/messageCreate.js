@@ -26,7 +26,7 @@ module.exports = async function messageCreate(bot, message) {
 	}
 
 	const cmdName = args.shift();
-	const cmd = bot.bolts.find(r => r.name == cmdName)
+	const cmd = bot.bolts.get(cmdName)
 	if (!cmd) return
 
 	if (message.channel.type !== 'dm' && !message.guild.me.permissions.has('EMBED_LINKS')) return message.channel.send('I need the `EMBED_LINKS` permission to be able to run properly!');

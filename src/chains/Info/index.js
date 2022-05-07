@@ -1,13 +1,13 @@
 const Chain = require('../../structures/Chain.js')
 const bolts = require('./bolts')
 
-class Foxbot extends Chain {
+class Info extends Chain {
 	constructor() {
 		super()
-		this.name = 'Foxbot'
-		this.description = 'The core module of Foxbot'
+		this.name = 'Info'
+		this.description = 'The informational module of Foxbot'
 		this.bolts = bolts
 	}
 }
 
-module.exports = Foxbot
+module.exports = Info

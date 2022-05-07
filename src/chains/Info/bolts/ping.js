@@ -7,7 +7,6 @@ class ping extends Bolt {
 	constructor(...args) {
 		super(...args);
 		this.name = 'ping';
-		this.chain = 'Foxbot';
 	}
 
 	/**
