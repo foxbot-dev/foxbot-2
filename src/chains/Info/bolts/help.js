@@ -1,5 +1,3 @@
-const { MessageEmbed } = require('discord.js');
-const Foxbot = require('../../../client/Foxbot.js');
 const Bolt = require('../../../structures/Bolt.js');
 const colors = require('../../../constants/colors.js');
 
@@ -7,12 +5,14 @@ class help extends Bolt {
 	constructor(...args) {
 		super(...args);
 		this.name = 'help';
+		this.cooldown = 10000
+		this.description = 'The help command, self explanatory'
 	}
 
 	/**
-	 * @param {{ bot: Foxbot, message: import('discord.js').Message, args: Array[string] }}}
+	 * @param {{ message: import('discord.js').Message, args: Array[string] }}}
 	 */
-	async execute({ bot, message, args }) {
+	async execute({ message, args }) {
 		const msg = {
 			embeds: [
 				{
@@ -23,9 +23,7 @@ class help extends Bolt {
 					footer: {
 						text: `Foxbot!`,
 					},
-					fields: [
-
-					]
+					fields: [],
 				},
 			],
 			components: [
@@ -37,6 +35,7 @@ class help extends Bolt {
 							style: 1,
 							emoji: '◀️',
 							customId: 'back',
+							disabled: true,
 						},
 						{
 							type: 2,
@@ -50,42 +49,47 @@ class help extends Bolt {
 		};
 
 		message.reply(msg).then((r) => {
+			const chains = this.bot.chains.filter((r) => !r.hidden);
 			const coll = r.createMessageComponentCollector({
 				filter: (i) => i.user.id === message.author.id,
 				time: 30000,
 			});
 
-			let currInd = 0;
+			let currInd = -1;
 			coll.on('collect', async (i) => {
 				switch (i.customId) {
 					case 'back':
 						currInd = Math.max(0, currInd - 1);
+
+						msg.components[0].components[1].style = 1;
+						msg.components[0].components[1].disabled = false;
 						if (currInd == 0) {
 							msg.components[0].components[0].disabled = true;
-
 							msg.components[0].components[0].style = 2;
-							msg.components[0].components[1].style = 1;
 						}
 						break;
 
 					case 'forward':
-						currInd = Math.min(bot.chains.size - 1, currInd + 1);
-						if (currInd == bot.chains.size - 1) {
+						if (currInd != -1) {
 							msg.components[0].components[0].disabled = false;
-
 							msg.components[0].components[0].style = 1;
+						}
+						currInd = Math.min(chains.size - 1, currInd + 1);
+						if (currInd == chains.size - 1) {
 							msg.components[0].components[1].style = 2;
+							msg.components[0].components[1].disabled = true;
 						}
 						break;
 				}
-				
-				const c = bot.chains.at(currInd)
-				msg.embeds[0].description = `${c.description}`
+
+				const c = chains.at(currInd);
+				msg.embeds[0].description = `${c.description}`;
 				msg.embeds[0].fields[0] = {
 					name: `Commands`,
-					value: `${c.bolts.map(r => r.name).join('\n')}`}
-				msg.embeds[0].title = c.name
-				msg.embeds[0].footer.text = `${currInd + 1}/${bot.chains.size}`;
+					value: `${c.bolts.map((r) => r.name).join('\n')}`,
+				};
+				msg.embeds[0].title = c.name;
+				msg.embeds[0].footer.text = `${currInd + 1}/${chains.size}`;
 
 				await i.update(msg);
 			});

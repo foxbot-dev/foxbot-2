@@ -1,6 +1,6 @@
 const { createClient } = require('redis');
 
-module.exports = async function connect() {
+async function connect() {
 	const client = createClient({
 		url: process.env.REDIS_HOST,
 	});
@@ -21,3 +21,7 @@ module.exports = async function connect() {
 	await wait;
 	return client;
 };
+
+module.exports = {
+	connect
+}

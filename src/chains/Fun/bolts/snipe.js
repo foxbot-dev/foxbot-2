@@ -7,6 +7,7 @@ class snipe extends Bolt {
 		this.name = 'snipe';
 		this.chain = 'Fun';
 		this.aliases = ['s']
+		this.description = 'Snipe the last 10 deleted messages in a channel'
 	}
 
 	/**

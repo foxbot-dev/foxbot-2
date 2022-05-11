@@ -10,6 +10,7 @@ class coinflip extends Bolt {
 		super(...args);
 		this.name = 'coinflip';
 		this.aliases = ['cf'];
+		this.description = 'Flip a coin!'
 	}
 
 	/**

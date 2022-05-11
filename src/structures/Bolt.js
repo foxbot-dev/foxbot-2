@@ -7,6 +7,8 @@ class Bolt {
 		this.chain = chain
 		this.guildOnly = false
 		this.dmOnly = false
+		this.usage = ''
+		this.description = 'Command has no description.'
 		this._handlers = new Map()
 	}
 

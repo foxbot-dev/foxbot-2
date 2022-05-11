@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "es -- node src/start.js"
+    "start": "es -- node src/start.js",
+	"json": "es -- node ./scripts/json.js"
   },
   "keywords": [],
   "author": "",

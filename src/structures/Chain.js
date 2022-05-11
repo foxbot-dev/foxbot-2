@@ -5,6 +5,7 @@ class Chain {
 	constructor(bot) {
 		this.bolts = [];
 		this.bot = bot;
+		this.hidden = false;
 		this._handlers = new Map();
 	}
 

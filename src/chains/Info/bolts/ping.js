@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const Foxbot = require('../../../client/Foxbot.js');
 const Bolt = require('../../../structures/Bolt.js');
 const colors = require('../../../constants/colors.js');
 
@@ -7,12 +6,13 @@ class ping extends Bolt {
 	constructor(...args) {
 		super(...args);
 		this.name = 'ping';
+		this.description = 'Get the bot ping, useful if the bot isn\'t responding'
 	}
 
 	/**
-	 * @param {{ bot: Foxbot, message: import('discord.js').Message, args: Array[string] }}}
+	 * @param {{ message: import('discord.js').Message, args: Array[string] }}}
 	 */
-	async execute({ bot, message, args }) {
+	async execute({ message, args }) {
 		const t = Date.now();
 		await message.reply('Ping...').then(async (r) => {
 			const t1 = Date.now();
@@ -23,7 +23,7 @@ class ping extends Bolt {
 						fields: [
 							{
 								name: 'WS Latency',
-								value: '`' + bot.client.ws.ping + 'ms`',
+								value: '`' + this.bot.client.ws.ping + 'ms`',
 							},
 							{
 								name: 'API Latency',
