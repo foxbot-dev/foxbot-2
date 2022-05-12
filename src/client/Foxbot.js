@@ -22,7 +22,8 @@ class Foxbot {
 
 		// client
 		this.client = new Client({
-			intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'],
+			intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_TYPING'],
+			partials: ['CHANNEL'],
 			allowedMentions: { parse: ['users'] },
 		});
 

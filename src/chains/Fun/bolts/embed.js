@@ -4,6 +4,7 @@ class embed extends Bolt {
 	constructor(...args) {
 		super(...args);
 		this.name = 'embed';
+		this.usage = '<json>'
 		this.description = 'Create a discord embed using JSON'
 	}
 

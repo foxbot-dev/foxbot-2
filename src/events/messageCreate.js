@@ -10,6 +10,8 @@ const colors = require('../constants/colors.js');
 module.exports = async function messageCreate(bot, message) {
 	if (message.author.bot) return;
 
+	if (message.partial) message = await message.fetch()
+
 	// guild avail.
 	if (
 		message.channel.type !== 'dm' &&
@@ -19,7 +21,6 @@ module.exports = async function messageCreate(bot, message) {
 	if (message.guild.me.isCommunicationDisabled()) return;
 
 	// check for prefix
-	// TODO: guild prefixes
 	let prefix = await bot.getPrefix(message.guildId)
 
 	if (![prefix, `<@${bot.client.user.id}>`, `<@!${bot.client.user.id}>`].some((r) => message.content.startsWith(r)))
