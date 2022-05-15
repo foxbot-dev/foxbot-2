@@ -1,3 +1,4 @@
 module.exports = [
-	require('./eval.js')
+	require('./eval.js'),
+	require('./exec.js')
 ]

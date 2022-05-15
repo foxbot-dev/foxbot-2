@@ -40,7 +40,7 @@ class snipe extends Bolt {
 							name: author.tag,
 							iconURL: author.avatarURL(),
 						},
-						description: rw[0][2],
+						description: rw[0][2].length > 4000 ? rw[0][2].substring(0, 4000) + '...' : rw[0][2],
 						timestamp: rw[0][1],
 						color: colors.default,
 						footer: {
@@ -169,7 +169,7 @@ class snipe extends Bolt {
 					name: author.tag,
 					iconURL: author.avatarURL(),
 				};
-				msg.embeds[0].description = ms[2];
+				msg.embeds[0].description = ms[2].length > 4000 ? ms[2].substring(0, 4000) + '...' : ms[2];
 				msg.embeds[0].timestamp = ms[1];
 				msg.embeds[0].footer.text = `${currInd + 1}/${rw.length}`;
 

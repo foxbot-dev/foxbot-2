@@ -13,12 +13,14 @@ module.exports = async function messageCreate(bot, message) {
 	if (message.partial) message = await message.fetch()
 
 	// guild avail.
-	if (
-		message.channel.type !== 'dm' &&
-		(!message.guild.available || !message.channel.permissionsFor(bot.client.user.id).has('SEND_MESSAGES'))
-	)
-		return;
-	if (message.guild.me.isCommunicationDisabled()) return;
+	if (message.channel.type !== 'DM') {
+		if (!message.guild.available || !message.channel.permissionsFor(bot.client.user.id).has('SEND_MESSAGES')) return;
+		if (message.guild.me.isCommunicationDisabled()) return;
+		// ensure bot has perms
+		if (!message.guild.me.permissions.has('EMBED_LINKS')) {
+			return message.channel.send('I need the `EMBED_LINKS` permission to be able to run properly!');
+		}
+	}
 
 	// check for prefix
 	let prefix = await bot.getPrefix(message.guildId)
@@ -36,6 +38,7 @@ module.exports = async function messageCreate(bot, message) {
 
 		if (!args.trim().length) return
 
+		// match quotes and separate args
 		args = args
 			.match(/(?<!\\)".*?"|[^ ]+/g)
 			.map((str) => str.replace(/"/g, ''));
@@ -46,9 +49,7 @@ module.exports = async function messageCreate(bot, message) {
 	const cmd = bot.bolts.get(cmdName);
 	if (!cmd) return;
 
-	// check channel type, perms
-	if (message.channel.type !== 'dm' && !message.guild.me.permissions.has('EMBED_LINKS'))
-		return message.channel.send('I need the `EMBED_LINKS` permission to be able to run properly!');
+	const argsStr = message.content.slice(message.content.indexOf(cmdName) + cmdName.length + 1)
 
 	// cmd cooldown
 	if (cmd.cooldown) {
@@ -72,5 +73,5 @@ module.exports = async function messageCreate(bot, message) {
 		if (!(await bot.getUserConfig(message.author.id)).sudo) return
 	}
 
-	await cmd.execute({ bot, message, args });
+	await cmd.execute({ bot, message, args, argsStr });
 };

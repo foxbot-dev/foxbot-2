@@ -45,7 +45,7 @@ class evalc extends Bolt {
 			blocks.forEach((r) => (res = res.toString().replace(new RegExp(r, 'gi'), '<potato>')));
 
 			// Parsing large evals
-			if (res && res.toString().length > 1950) res = res.match(/(.|[\r\n]){1,1950}/g);
+			if (res && res.toString().length > 1950) res = res.match(/(.|[\r\n]){1,4000}/g);
 
 			// if eval was large
 			if (Array.isArray(res)) {
@@ -104,7 +104,7 @@ class evalc extends Bolt {
 			});
 
 			// Parse large eval
-			if (res && res.toString().length > 1950) res = res.match(/(.|[\r\n]){1,1950}/g);
+			if (res && res.toString().length > 1950) res = res.match(/(.|[\r\n]){1,4000}/g);
 
 			// if eval was large
 			if (Array.isArray(res)) {
